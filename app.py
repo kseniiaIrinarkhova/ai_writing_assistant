@@ -30,7 +30,22 @@ with st.form("summarize_form", clear_on_submit=True):
     submitted = st.form_submit_button('Submit')
     # If form is submitted
     if submitted:
+        #clear the previous summarized text
         st.session_state["summarized_text"] = ""
+        # Summarize the text
         with st.spinner("Summarizing..."):
+            # Invoke the chain
             summarized_text = chain.invoke({"text": text_to_summarize})
-            print(summarized_text)
+            # Save the summarized text in session state
+            st.session_state["summarized_text"] = summarized_text
+
+# Display the summarized text
+if st.session_state["summarized_text"]:
+    input, output = st.columns(2)
+
+    with input:
+        st.markdown(f"## Your text \n\n{text_to_summarize}")
+
+    with output:
+        st.markdown(f"## Summarized text \n\n")
+        st.markdown(st.session_state.summarized_text)
