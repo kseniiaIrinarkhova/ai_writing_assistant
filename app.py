@@ -25,6 +25,12 @@ chain = prompt_template | llm | parser
 st.session_state["summarized_text"] = ""
 
 with st.form("summarize_form", clear_on_submit=True):
-  # Text
-  text_to_summarize = st.text_area('Enter text to summarize')
-  submitted = st.form_submit_button('Submit')
+    # Text
+    text_to_summarize = st.text_area('Enter text to summarize')
+    submitted = st.form_submit_button('Submit')
+    # If form is submitted
+    if submitted:
+        st.session_state["summarized_text"] = ""
+        with st.spinner("Summarizing..."):
+            summarized_text = chain.invoke({"text": text_to_summarize})
+            print(summarized_text)
